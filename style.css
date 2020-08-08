@@ -1,44 +1,67 @@
-*,
-*::before,
-*::after {
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
   box-sizing: border-box;
 }
 
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
 button {
-  border: none;
-  padding: 0;
-  background-color: rgba(0, 0, 0, 0);
-}
-
-button:hover {
+  background: none;
+  border-style: none;
   cursor: pointer;
-}
-
-button:focus {
   outline: none;
 }
 
+/* Base styles */
+
 body {
+  font-family: Roboto, Helvetica, sans-serif;
+  padding: 20px;
+  color: #333333;
+}
+
+.app-wrapper {
   display: flex;
-  font-family: 'Verdana', sans-serif;
+  flex-wrap: wrap;
+  margin: 0 auto;
+  height: calc(100vh - 40px);
 }
 
 main {
-  flex: 3;
-  padding: 20px;
+  margin-right: 20px;
+  border: 1px solid #333333;
+  padding: 30px;
+  width: calc(70% - 20px);
+  height: 100%;
+  overflow-y: auto;
 }
 
 aside {
-  flex: 1;
+  border: 1px solid #333333;
+  padding: 30px;
+  width: 30%;
+  height: 100%;
+  background-color: #f8f8f8;
+  font-size: 17px;
 }
 
 h1,
 h2 {
+  margin-bottom: 20px;
   text-align: center;
 }
 
-h2 {
-  margin: 60px 0;
+.view-toogler {
+  margin-left: 15px;
 }
 
 input {
@@ -47,45 +70,33 @@ input {
 
 label {
   font-size: 30px;
-  border-radius: 10px;
-  padding: 0 5px 3px 6px;
+  padding: 0 5px 0 6px;
+  cursor: pointer;
 }
 
-.movie-card {
-  position: relative;
-  margin: 10px 5px;
-  padding: 20px;
-  border: 1px solid #c0c0c0;
-  border-radius: 10px;
-  font-size: 13px;
+.genre-select {
+  float: right;
+  margin-right: 15px;
+  width: 150px;
+  height: 30px;
+  font-size: 15px;
 }
 
-.movie-card:hover {
-  box-shadow: 0 0 10px #808080;
+.hide {
+  display: none;
 }
 
 input:checked.grid~label[for='grid-view'] {
-  background-color: #c0c0c0;
+  border: 1px solid #333333;
 }
 
 input:checked.list~label[for='list-view'] {
-  background-color: #c0c0c0;
+  border: 1px solid #333333;
 }
 
 input:checked.grid~.cards-wrapper {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
-}
-
-input:checked.grid~.cards-wrapper .movie-card {
-  width: 20%;
-  text-align: center;
-}
-
-input:checked.grid~.cards-wrapper .movie-description,
-input:checked.grid~.cards-wrapper .movie-genres {
-  display: none;
 }
 
 input:checked.list~.cards-wrapper {
@@ -94,51 +105,98 @@ input:checked.list~.cards-wrapper {
   flex-direction: column;
 }
 
-input:checked.list~.cards-wrapper .movie-card {
-  display: flex;
-  width: 95%;
-  height: 200px;
-  margin: 10px 0;
-  padding: 20px 20px 20px 0;
+.movie-card {
+  position: relative;
+  margin: 20px 15px;
+  padding: 20px;
+  border: 1px solid #333333;
+  border-radius: 10px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.movie-card:hover {
+  box-shadow: -1px 3px 3px rgba(80, 80, 80, 0.5);
 }
 
 .poster-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 70%;
+  height: 65%;
+  background-color: #f8f8f8;
 }
 
 .movie-poster {
-  max-height: 90%;
   max-width: 100%;
+  max-height: 100%;
 }
 
-input:checked.list~.cards-wrapper .poster-wrapper {
-  flex: 1;
-  align-self: center;
-  height: 90%;
-  margin: 0 10px;
-}
-
-input:checked.list~.cards-wrapper .content-wrapper {
-  flex: 3;
-}
-
-input:checked.list~.cards-wrapper hr {
-  display: none;
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 35%;
 }
 
 .movie-name {
+  margin-top: 30px;
   font-weight: bold;
 }
 
-.favs-wrapper {
-  margin: 10px;
-  border: 1px solid #c0c0c0;
-  border-radius: 10px;
-  padding: 20px;
-  font-size: 13px;
+.favorite-star {
+  position: absolute;
+  top: 3px;
+  right: 10px;
+  font-size: 30px;
+  color: #808080;
+}
+
+.favorite-star:hover {
+  color: #ffd700;
+}
+
+.is-favorite {
+  color: #ffd700;
+}
+
+input:checked.grid~.cards-wrapper .movie-card {
+  flex-direction: column;
+  justify-content: space-between;
+  width: calc(25% - 30px);
+  min-height: 350px;
+  text-align: center;
+}
+
+input:checked.grid~.cards-wrapper .movie-description,
+input:checked.grid~.cards-wrapper .movie-genres {
+  display: none;
+}
+
+input:checked.list~.cards-wrapper .movie-card {
+  display: flex;
+  width: calc(100% - 30px);
+  height: 200px;
+  margin-bottom: 10px;
+}
+
+input:checked.list~.cards-wrapper .hide {
+  display: none;
+}
+
+input:checked.list~.cards-wrapper .poster-wrapper {
+  align-self: center;
+  width: 25%;
+  height: 100%;
+  margin-right: 20px;
+}
+
+input:checked.list~.cards-wrapper .content-wrapper {
+  width: 75%;
+}
+
+input:checked.list~.cards-wrapper .movie-name {
+  margin-top: 0;
 }
 
 li {
@@ -156,24 +214,7 @@ li::before {
   transform: translateY(-50%);
 }
 
-.favorite-star {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  font-size: 20px;
-  color: #808080;
-}
-
-.modal-wrapper .favorite-star {
-  position: static;
-}
-
-.is-favorite {
-  color: #ffd700;
-}
-
 .remove-favorite {
-  font-size: 13px;
   font-weight: bold;
   color: #8b0000;
 }
@@ -192,37 +233,65 @@ li::before {
   display: flex;
   top: 50%;
   right: 50%;
-  border: 1px solid #c0c0c0;
-  border-radius: 10px;
-  padding: 20px;
-  background-color: #fff;
+  width: 700px;
+  height: 300px;
+  border: 1px solid #333333;
+  padding: 30px;
+  background-color: #ffffff;
   transform: translate(50%, -50%);
-  font-size: 13px;
-}
-
-.modal-wrapper .favorite-star {
-  font-size: 30px;
-}
-
-.modal-wrapper .movie-year {
-  display: inline-block;
+  font-size: 15px;
 }
 
 .left-side-popup {
-  flex: 1;
+  width: 35%;
   margin-right: 20px;
 }
 
+.left-side-popup .poster-wrapper {
+  align-self: center;
+  height: 70%;
+}
+
+.left-side-popup .favorite-star {
+  position: absolute;
+  top: 10px;
+  left: 20px;
+}
+
+.left-side-popup .movie-year {
+  text-align: center;
+}
+
+.left-side-popup .movie-genres {
+  margin-top: 20px;
+  text-align: center;
+}
+
 .right-side-popup {
-  flex: 2;
+  width: 65%;
+}
+
+.right-side-popup .movie-name {
+  font-size: 17px;
+}
+
+.right-side-popup .movie-description {
+  margin-top: 20px;
+}
+
+.right-side-popup .movie-director {
+  margin-top: 20px;
+}
+
+.right-side-popup .movie-starring {
+  margin-top: 20px;
 }
 
 .close-popup {
   position: absolute;
-  top: -10px;
-  right: 5px;
-  font-size: 40px;
-  line-height: ;
+  top: 0;
+  right: 15px;
+  font-size: 50px;
   color: #808080;
 }
 

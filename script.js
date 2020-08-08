@@ -1,11 +1,25 @@
 let moviesData;
+const genreSelect = document.querySelector('.genre-select');
 
 fetch('http://my-json-server.typicode.com/moviedb-tech/movies/list')
   .then(response => response.json())
   .then(movies => {
+    renderGenres(movies);
     prepareData(movies);
     renderUI();
   });
+
+function renderGenres(movies) {
+  const genres = new Set;
+  movies.forEach((movie) => {
+    movie.genres.forEach((genre) => {
+      genres.add(genre.toLowerCase());
+    });
+  });
+  genres.forEach((genre) => {
+    genreSelect.innerHTML += `<option value='${genre}'>${genre}</option>`;
+  });
+};
 
 function prepareData(movies) {
   if (!localStorage.getItem('movies')) {
@@ -32,17 +46,18 @@ function renderGrid() {
   moviesData.forEach((movie) => {
     const buttonClass = movie.isFavorite ? 'favorite-star is-favorite' : 'favorite-star';
     const movieCard = document.createElement('div');
+    const genres = movie.genres.join(', ').toLowerCase();
     movieCard.classList.add('movie-card');
+    movieCard.dataset.genres = genres;
     movieCard.dataset.id = movie.id;
     movieCard.innerHTML = `
       <div class='poster-wrapper'><img src=${movie.img} alt='${movie.name}' class='movie-poster'></div>
-      <hr>
       <button data-id=${movie.id} class='${buttonClass}'>★</button>
       <div class='content-wrapper'>
         <p class='movie-name'>${movie.name}</p>
         <p class='movie-year'>${movie.year}</p>
         <p class='movie-description'>${movie.description}</p>
-        <div class='movie-genres'>${movie.genres.join(', ')}</div>
+        <div class='movie-genres'>${genres}</div>
       </div>
     `;
 
@@ -52,7 +67,6 @@ function renderGrid() {
     movieCard.addEventListener('click', (event) => {
       renderModal(event);
     });
-
     cardsWrapper.appendChild(movieCard);
   });
 
@@ -82,7 +96,7 @@ function renderFavs() {
         moviesData.forEach((movie) => {
           if (movie.id === +event.target.dataset.id) {
             movie.isFavorite = !movie.isFavorite;
-            const starOnCard = document.querySelector(`.movie-card [data-id="${event.target.dataset.id}"]`);
+            const starOnCard = document.querySelector(`.movie-card [data-id='${event.target.dataset.id}']`);
             starOnCard.classList.remove('is-favorite');
           }
         });
@@ -107,13 +121,13 @@ function renderModal(event) {
       if (movie.id === +targetParent.dataset.id) {
         const buttonClass = movie.isFavorite ? 'favorite-star is-favorite' : 'favorite-star';
         modalWrapper.innerHTML = `
-          <div class="modal-wrapper">
+          <div class='modal-wrapper'>
             <div class='left-side-popup'>
             <div class='poster-wrapper'><img src=${movie.img} alt='${movie.name}' class='movie-poster'></div>
               <br>
               <button data-id=${movie.id} class='${buttonClass}'>★</button>
               <p class='movie-year'>${movie.year}</p>
-              <div class='movie-genres'>${movie.genres.join(", ")}</div>
+              <div class='movie-genres'>${movie.genres.join(', ').toLowerCase()}</div>
             </div>
             <div class='right-side-popup'>
               <p class='movie-name'>${movie.name}</p>
@@ -124,7 +138,7 @@ function renderModal(event) {
             <button class='close-popup'>×</button>
           </div>
         `;
-        
+
         const favButton = modalWrapper.querySelector('.favorite-star');
         makeFavorite(favButton);
 
@@ -156,3 +170,15 @@ function makeFavorite(button) {
     renderFavs();
   });
 }
+
+genreSelect.addEventListener('change', (event) => {
+  const movieCards = document.querySelectorAll('.movie-card');
+  movieCards.forEach((card) => {
+    card.classList.remove('hide');
+    if (event.target.value === 'all') {
+      card.classList.remove('hide');
+    } else if (!card.dataset.genres.includes(event.target.value)) {
+      card.classList.add('hide');
+    }
+  });
+});

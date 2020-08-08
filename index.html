@@ -9,16 +9,24 @@
 </head>
 
 <body>
-  <main>
-    <h1>Movies Gallery</h1>
-    <input type="radio" id="grid-view" class="grid" name="view" checked>
-    <label for="grid-view">☷</label>
-    <input type="radio" id="list-view" class="list" name="view">
-    <label for="list-view">☰</label>
-  </main>
-  <aside>
-    <h2>Favorite List</h2>
-  </aside>
+  <div class="app-wrapper">
+    <main>
+      <h1>Movies Gallery</h1>
+      <span class="view-toogler">view as:</span>
+      <input type="radio" id="grid-view" class="grid" name="view" checked>
+      <label for="grid-view">☷</label>
+      <input type="radio" id="list-view" class="list" name="view">
+      <label for="list-view">☰</label>
+      <select class="genre-select">
+        <option disabled selected>select genre</option>
+        <option value="all">all genres</option>
+      </select>
+    </main>
+    <aside>
+      <h2>Favorite List</h2>
+    </aside>
+  </div>
+
   <script src="script.js"></script>
 </body>
 
